@@ -1,37 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./styles/Header.css";
-import { Link } from "react-router-dom";
 import logoIcon from "../assets/icons/logoo.svg";
 import profileIcon from "../assets/icons/profile-icon.svg";
+import ProfileModal from "./ProfileModal";
 
 export default function Header() {
+  const [isModalOpen, setModalOpen] = useState(false);
+
   return (
-    <header className="header">
-      <div className="header__logo">
-        <NavLink to="/">
-          <img src={logoIcon} alt="Логотип" height={36} />
-        </NavLink>
-      </div>
-      <nav className="header__nav">
-        <NavLink
-          to="/schedule"
-          className={({ isActive }) => isActive ? "nav-menu active" : "nav-menu"}
-        >
-          Расписание
-        </NavLink>
-        <NavLink
-          to="/branches"
-          className={({ isActive }) => isActive ? "nav-menu active" : "nav-menu"}
-        >
-          Филиалы
-        </NavLink>
-        <div className="profile-icon">
-          <a className="profileIcon" href="/profile">
-            <img src={profileIcon} alt="Профиль" height={36} />
-          </a>
+    <>
+      <header className="header">
+        <div className="header__logo">
+          <NavLink to="/">
+            <img src={logoIcon} alt="Логотип" height={36} />
+          </NavLink>
         </div>
-      </nav>
-    </header>
+        <nav className="header__nav">
+          <NavLink
+            to="/schedule"
+            className={({ isActive }) => (isActive ? "nav-menu active" : "nav-menu")}
+          >
+            Расписание
+          </NavLink>
+          <NavLink
+            to="/branches"
+            className={({ isActive }) => (isActive ? "nav-menu active" : "nav-menu")}
+          >
+            Филиалы
+          </NavLink>
+          <div className="profile-icon">
+            <button className="profileIcon" onClick={() => setModalOpen(true)}>
+              <img src={profileIcon} alt="Профиль" height={36} />
+            </button>
+          </div>
+        </nav>
+      </header>
+      <ProfileModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+    </>
   );
 }

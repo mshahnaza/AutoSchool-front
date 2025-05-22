@@ -16,14 +16,14 @@
   border-radius: 1rem;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  color: #1e40af; /* Тёмно-голубой */
+  color: #000002; /* Тёмно-голубой */
 }
 
 .branch-title {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
-  color: #004f86; /* Тёмно-синий */
+  color: #060606; /* Тёмно-синий */
 }
 
 .branch-map {
@@ -44,4 +44,5 @@
 
 .branch-link:hover {
   background-color: #1d4ed8;
+  color: black; 
 }
