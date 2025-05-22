@@ -1,7 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./styles/Header.css";
-import logoIcon from "../assets/icons/logo.svg";
+import { Link } from "react-router-dom";
+import logoIcon from "../assets/icons/logoo.svg";
 import profileIcon from "../assets/icons/profile-icon.svg";
 
 export default function Header() {
