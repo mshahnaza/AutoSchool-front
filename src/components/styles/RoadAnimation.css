@@ -1,0 +1,40 @@
+.road-animation-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.road-svg {
+  width: 2500px;
+  height: 800px;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  opacity: 0.15;
+}
+
+.car-on-road {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 80px;
+  height: auto;
+  offset-path: path("M 0,400 C 300,350 300,100 600,150 S 900,450 1200,350 S 1500,0 1800,200 S 2200,400 2500,350");
+  offset-rotate: auto;
+  animation: drive 12s linear infinite;
+  z-index: -1;
+}
+
+@keyframes drive {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
