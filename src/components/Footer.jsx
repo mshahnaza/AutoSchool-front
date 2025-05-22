@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import "./Footer.css";
+import "./styles/Footer.css";
 import youtubeIcon from "../assets/icons/youtube.svg";
 import vkIcon from "../assets/icons/vk.svg";
 import telegramIcon from "../assets/icons/telegram.svg";

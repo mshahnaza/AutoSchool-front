@@ -24,6 +24,14 @@ const examData = {
         { date: "22 МАЯ", category: "A" },
         { date: "24 МАЯ", category: "B" }
       ]
+    },
+    {
+      title: "Сокулукский район",
+      address: "M39, ул. Шопокова",
+      exams: [
+        { date: "23 МАЯ", category: "A" },
+        { date: "30 МАЯ", category: "C" }
+      ]
     }
   ]
 };
