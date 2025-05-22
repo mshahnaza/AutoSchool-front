@@ -1,0 +1,43 @@
+.header {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.header__logo img {
+  height: 50px;
+}
+
+.header__nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.header__nav a {
+  color: #222;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 15px 12px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.header__nav .nav-menu.active,
+.header__nav .nav-menu:hover {
+  background: #3C78FB;
+  color: #fff;
+}
+
+.header__pay {
+  background: #ffd600;
+  color: #222 !important;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 8px 20px !important;
+  margin-left: 12px;
+}

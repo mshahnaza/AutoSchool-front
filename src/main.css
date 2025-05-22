@@ -1,0 +1,26 @@
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: #f8f8f8;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #2e7d32;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: #1b5e20;
+}
+
+h1, h2, h3 {
+  font-family: 'Inter', Arial, sans-serif;
+  font-weight: 700;
+}
+
+main {
+  min-height: 70vh;
+  padding-bottom: 40px;
+}

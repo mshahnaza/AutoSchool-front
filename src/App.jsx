@@ -1,12 +1,15 @@
-import React from 'react';
-import Schedule from './components/Schedule';
+import React from "react";
+import Header from "./components/Header";
+// import Tabs from "./components/Tabs";
+// import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="App">
-      <Schedule />
+    <div>
+      <Header />
+    
     </div>
   );
-};
+}
 
 export default App;
