@@ -11,10 +11,6 @@ function App() {
       <Header />
       <Routes>
         <Route path="/schedule" element={<Tabs />} />
-        {/* Add other routes here */}
-      </Routes>
-      <Routes>
-        <Route path="/schedule" element={<Tabs />} />
         <Route path="/branches" element={<Branches />} /> {/* добавили маршрут */}
       </Routes>
       <Footer />
