@@ -1,0 +1,44 @@
+.exam-block {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 32px 24px 24px 24px;
+}
+
+.exam-title {
+  text-align: center;
+  font-size: 2em;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.exam-address {
+  text-align: left;
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.exam-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.1em;
+}
+
+.exam-table th {
+  background: #e3f1ff;
+  font-weight: 600;
+  padding: 12px 8px;
+  text-align: left;
+}
+
+.exam-table td {
+  background: #fafbfc;
+  padding: 12px 8px;
+}
+
+.exam-table tr:nth-child(even) td {
+  background: #f3f6fa;
+}

@@ -1,0 +1,57 @@
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tabs button {
+  background: #eaeaea;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px 20px 0 0;
+  font-size: 16px;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tabs button.active {
+  background: #3C78FB;
+  color: #fff;
+  font-weight: bold;
+}
+
+.schedule-table {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 40px auto;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  font-size: 16px;
+}
+
+.schedule-table th,
+.schedule-table td {
+  border: 1px solid #e0e0e0;
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.schedule-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.schedule-table tr:nth-child(even) {
+  background: #fafafa;
+}
+
+h2 {
+  text-align: center;
+  margin: 32px 0 16px 0;
+  color: #2e7d32;
+  font-size: 1.5em;
+}

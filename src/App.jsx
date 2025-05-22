@@ -1,14 +1,19 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-// import Tabs from "./components/Tabs";
 import Footer from "./components/Footer";
+import Tabs from "./components/Schedule/Tabs";
 
 function App() {
   return (
-    <div>
+    <Router>
       <Header />
+      <Routes>
+        <Route path="/schedule" element={<Tabs />} />
+        {/* Add other routes here */}
+      </Routes>
       <Footer />
-    </div>
+    </Router>
   );
 }
 

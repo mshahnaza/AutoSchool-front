@@ -1,0 +1,27 @@
+import React from "react";
+import "../styles/PracticeExamTable.css";
+
+export default function PracticeExamTable({ title, address, exams }) {
+  return (
+    <div className="exam-block">
+      <h1 className="exam-title">{title}</h1>
+      <h2 className="exam-address">{address}</h2>
+      <table className="exam-table">
+        <thead>
+          <tr>
+            <th>Дата экзамена</th>
+            <th>Категория</th>
+          </tr>
+        </thead>
+        <tbody>
+          {exams.map((row, i) => (
+            <tr key={i}>
+              <td>{row.date}</td>
+              <td>{row.category}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
