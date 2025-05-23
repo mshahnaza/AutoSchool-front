@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import "./styles/Header.css";
 import logoIcon from "../assets/icons/logoo.svg";
 import profileIcon from "../assets/icons/profile-icon.svg";
-import ProfileModal from "./ProfileModal";
+import ProfileModal from "./ProfilePage";
 
 export default function Header() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -30,13 +30,12 @@ export default function Header() {
             Филиалы
           </NavLink>
           <div className="profile-icon">
-            <button className="profileIcon" onClick={() => setModalOpen(true)}>
+            <NavLink to="/profile" className="profileIcon">
               <img src={profileIcon} alt="Профиль" height={36} />
-            </button>
+            </NavLink>
           </div>
         </nav>
       </header>
-      <ProfileModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
     </>
   );
 }
