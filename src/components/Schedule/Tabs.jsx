@@ -21,8 +21,9 @@ const examData = {
       title: "АЮ Grand",
       address: "ул. Чокана Валиханова, 2а",
       exams: [
-        { date: "22 МАЯ", category: "A" },
-        { date: "24 МАЯ", category: "B" }
+        { date: "22 МАЯ", category: "A", instructor: "Иванов И.И." },
+        { date: "24 МАЯ", category: "B", instructor: "Петров П.П." },
+        { date: "22 МАЯ", category: "B", instructor: "Сидоров С.С." }
       ]
     },
     {

@@ -13,6 +13,7 @@ export default function PracticeExamTable({ title, address, exams }) {
           <tr>
             <th>Дата экзамена</th>
             <th>Категория</th>
+            <th>Инструктор</th>
           </tr>
         </thead>
         <tbody>
@@ -27,6 +28,7 @@ export default function PracticeExamTable({ title, address, exams }) {
                     title,
                     address,
                     category: row.category,
+                    instructor: row.instructor,
                     type: "practice"
                   }
                 })
@@ -35,6 +37,7 @@ export default function PracticeExamTable({ title, address, exams }) {
             >
               <td>{row.date}</td>
               <td>{row.category}</td>
+              <td>{row.instructor}</td>
             </tr>
           ))}
         </tbody>
