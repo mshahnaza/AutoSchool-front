@@ -1,0 +1,91 @@
+.exam-details-container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 40px 32px 32px 32px;
+}
+
+.exam-details-container h1 {
+  text-align: center;
+  font-size: 2.5em;
+  font-weight: 800;
+  margin-bottom: 0.5em;
+}
+
+.exam-details-container h2 {
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: 600;
+  margin-bottom: 0.5em;
+  color: #444;
+}
+
+.exam-details-container h3 {
+  text-align: center;
+  font-size: 1.1em;
+  font-weight: 500;
+  margin-bottom: 2em;
+  color: #222;
+}
+
+.exam-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.1em;
+  margin-bottom: 2em;
+}
+
+.exam-table th {
+  background: #e3f1ff;
+  font-weight: 700;
+  padding: 14px 8px;
+  text-align: left;
+}
+
+.exam-table td {
+  background: #fafbfc;
+  padding: 14px 8px;
+}
+
+.exam-table tr:nth-child(even) td {
+  background: #f3f6fa;
+}
+
+.exam-table button {
+  background: #4285f4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 32px;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.exam-table button:hover {
+  background: #1a73e8;
+}
+
+.back-btn {
+  display: block;
+  margin: 0 auto;
+  background: #eee;
+  color: #222;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 32px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.back-btn:hover {
+  background: #d1d5db;
+}
+
+.exam-details-container .exam-table td:last-child {
+  text-align: right;
+}
