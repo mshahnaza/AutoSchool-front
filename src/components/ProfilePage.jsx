@@ -4,18 +4,23 @@ import defaultAvatar from "../assets/icons/default-avatar.svg";
 import ExamsInfo from "./ExamsInfo"; // импортируем новый компонент
 
 export default function ProfilePage() {
-  const [userData, setUserData] = useState(() => ({
-    name: "Иван Иванов",
-    email: "ivan@example.com",
-    phone: "+7 (999) 123-45-67",
-    passportId: "1234 567890",
-    about: "Преподаватель математики с 5-летним стажем.",
-    avatar: localStorage.getItem("userAvatar") || null,
-    exams: {
-      theory: { score: 19, maxScore: 20, date: "2025-05-10" },
-      practice: { passed: true, date: "2025-05-15" },
-    },
-  }));
+  const [userData, setUserData] = useState(() => {
+  const storedData = localStorage.getItem("userData");
+  return storedData
+    ? JSON.parse(storedData)
+    : {
+        name: "Иван Иванов",
+        email: "ivan@example.com",
+        phone: "+7 (999) 123-45-67",
+        passportId: "1234 567890",
+        about: "Преподаватель математики с 5-летним стажем.",
+        avatar: localStorage.getItem("userAvatar") || null,
+        exams: {
+          theory: { score: 19, maxScore: 20, date: "2025-05-10" },
+          practice: { passed: true, date: "2025-05-15" },
+        },
+      };
+});
 
   const [isEditing, setIsEditing] = useState(false);
   const [tempData, setTempData] = useState(userData);
@@ -44,8 +49,9 @@ export default function ProfilePage() {
   };
 
   const handleSave = () => {
-    setUserData(tempData);
-    setIsEditing(false);
+  setUserData(tempData);
+  localStorage.setItem("userData", JSON.stringify(tempData)); // <- сохранение
+  setIsEditing(false);
   };
 
   return (
