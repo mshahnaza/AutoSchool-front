@@ -1,0 +1,50 @@
+.exams-container {
+  background: #f3f4f6;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.1);
+  color: #1f2937;
+}
+
+.exams-container h2 {
+  margin-bottom: 1rem;
+  color: #2563eb; /* насыщенный синий */
+  font-weight: 700;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #2563eb;
+  padding-bottom: 0.25rem;
+}
+
+.exam-item {
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.exam-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.exam-item h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #1e40af; /* темно-синий */
+}
+
+.passed {
+  color: #10b981; /* зеленый */
+  font-weight: 600;
+}
+
+.failed {
+  color: #ef4444; /* красный */
+  font-weight: 600;
+}
+
+.info {
+  font-style: italic;
+  color: #6b7280; /* серый */
+}

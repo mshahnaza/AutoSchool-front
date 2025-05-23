@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import "./styles/ProfilePage.css";
-import defaultAvatar from "../assets/icons/default-avatar.svg"; 
+import defaultAvatar from "../assets/icons/default-avatar.svg";
+import ExamsInfo from "./ExamsInfo"; // импортируем новый компонент
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState(() => ({
-  name: "Иван Иванов",
-  email: "ivan@example.com",
-  about: "Преподаватель математики с 5-летним стажем.",
-  avatar: localStorage.getItem("userAvatar") || null,
+    name: "Иван Иванов",
+    email: "ivan@example.com",
+    phone: "+7 (999) 123-45-67",
+    passportId: "1234 567890",
+    about: "Преподаватель математики с 5-летним стажем.",
+    avatar: localStorage.getItem("userAvatar") || null,
+    exams: {
+      theory: { score: 19, maxScore: 20, date: "2025-05-10" },
+      practice: { passed: true, date: "2025-05-15" },
+    },
   }));
 
   const [isEditing, setIsEditing] = useState(false);
@@ -19,17 +26,17 @@ export default function ProfilePage() {
   };
 
   const handleAvatarChange = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64 = reader.result;
-      setTempData((prev) => ({ ...prev, avatar: base64 }));
-      localStorage.setItem("userAvatar", base64); // сохраняем в localStorage
-    };
-    reader.readAsDataURL(file);
-  }
-};
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64 = reader.result;
+        setTempData((prev) => ({ ...prev, avatar: base64 }));
+        localStorage.setItem("userAvatar", base64);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleEdit = () => {
     setTempData(userData);
@@ -55,7 +62,12 @@ export default function ProfilePage() {
           {isEditing && (
             <label className="upload-btn">
               Загрузить фото
-              <input type="file" accept="image/*" onChange={handleAvatarChange} hidden />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                hidden
+              />
             </label>
           )}
         </div>
@@ -89,6 +101,34 @@ export default function ProfilePage() {
         </div>
 
         <div className="profile-field">
+          <label>Номер телефона:</label>
+          {isEditing ? (
+            <input
+              type="text"
+              name="phone"
+              value={tempData.phone}
+              onChange={handleChange}
+            />
+          ) : (
+            <span>{userData.phone}</span>
+          )}
+        </div>
+
+        <div className="profile-field">
+          <label>Паспорт ID:</label>
+          {isEditing ? (
+            <input
+              type="text"
+              name="passportId"
+              value={tempData.passportId}
+              onChange={handleChange}
+            />
+          ) : (
+            <span>{userData.passportId}</span>
+          )}
+        </div>
+
+        <div className="profile-field">
           <label>О себе:</label>
           {isEditing ? (
             <textarea
@@ -103,10 +143,17 @@ export default function ProfilePage() {
         </div>
 
         {isEditing ? (
-          <button className="save-btn" onClick={handleSave}>Сохранить</button>
+          <button className="save-btn" onClick={handleSave}>
+            Сохранить
+          </button>
         ) : (
-          <button className="edit-btn" onClick={handleEdit}>Редактировать</button>
+          <button className="edit-btn" onClick={handleEdit}>
+            Редактировать
+          </button>
         )}
+
+        {/* Вставляем компонент экзаменов */}
+        <ExamsInfo exams={userData.exams} />
       </div>
     </div>
   );
