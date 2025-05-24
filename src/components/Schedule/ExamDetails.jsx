@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
+import ModalAlert from "../shared/ModalAlert";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/ExamDetails.css";
+import Loader from "../shared/Loader";
 
 export default function ExamDetailPage() {
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   const {
-    id, // examDayId должен быть передан из таблицы (добавьте его в state при переходе!)
+    id, 
     date,
     originalDate, 
     title,
@@ -21,40 +24,71 @@ export default function ExamDetailPage() {
   const [slots, setSlots] = useState([]);
   const [selectedInstructor, setSelectedInstructor] = useState(null);
 
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertDetails, setAlertDetails] = useState({});
+
   useEffect(() => {
     if (id) {
+      setLoading(true);
       axios.get(`/api/v1/slot/exam-day-id/${id}`)
         .then(res => setSlots(res.data))
-        .catch(() => setSlots([]));
+        .catch(() => setSlots([]))
+        .finally(() => setLoading(false));
     }
   }, [id]);
 
   const handleBook = async (slotId) => {
-    try {
-      const studentId = 1;
-      const examDate = originalDate;
-      const takenAt = examDate;
-      const expirationAt = new Date(examDate);
-      expirationAt.setMonth(expirationAt.getMonth() + 3);
-      const expirationAtStr = expirationAt.toISOString().slice(0, 10);
+  try {
+    setLoading(true);
+    
+    const studentId = 1;
+    const examDate = originalDate;
+    const takenAt = examDate;
+    const expirationAt = new Date(examDate);
+    expirationAt.setMonth(expirationAt.getMonth() + 3);
+    const expirationAtStr = expirationAt.toISOString().slice(0, 10);
 
-      await axios.post("/api/v1/exam/create", {
-        id: null,
-        result: "PENDING",
-        remarks: null,
-        expirationAt: expirationAtStr,
-        takenAt,
-        studentId,
-        slotId,
-      });
-      const res = await axios.get(`/api/v1/slot/exam-day-id/${id}`);
-      setSlots(res.data);
-      alert("Вы успешно записались!");
-    } catch (e) {
-      alert("Ошибка при бронировании слота");
-      console.error("Ошибка при бронировании слота:", e?.response?.data || e);
-    }
-  };
+    const slot = slots.find(s => s.id === slotId);
+
+    await axios.post("/api/v1/exam/create", {
+      id: null,
+      result: "PENDING",
+      remarks: null,
+      expirationAt: expirationAtStr,
+      takenAt,
+      studentId,
+      slotId,
+    });
+    const res = await axios.get(`/api/v1/slot/exam-day-id/${id}`);
+    setSlots(res.data);
+    setAlertMsg("Вы успешно записались!");
+    setAlertDetails(
+      type === "practice"
+        ? {
+            date,
+            time: slot?.time,
+            category,
+            instructor: slot?.instructor?.user?.name,
+            address, // добавлено место
+          }
+        : {
+            date,
+            time: slot?.time,
+            category,
+            address, // добавлено место
+          }
+    );
+    setAlertOpen(true);
+
+  } catch (e) {
+    setAlertMsg("Ошибка при бронировании слота");
+    setAlertOpen(true);
+    console.error("Ошибка при бронировании слота:", e?.response?.data || e);
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (!date || !type) {
     return (
@@ -131,6 +165,12 @@ export default function ExamDetailPage() {
       <button className="back-btn" onClick={() => navigate(-1)}>
         Назад
       </button>
+      {loading && <Loader />}
+      <ModalAlert
+        open={alertOpen}
+        message={alertMsg}
+        details={alertDetails}
+        onClose={() => setAlertOpen(false)} />
     </div>
   );
 }

@@ -15,7 +15,6 @@ export default function Tabs() {
       const data = res.data;
       console.log("API response:", res.data);
 
-      // Группируем по филиалам и типу экзамена
       const theoryMap = {};
       const practiceMap = {};
 
@@ -30,7 +29,7 @@ export default function Tabs() {
           id: item.id,
           date: new Date(item.date).toLocaleDateString("ru-RU", { day: "2-digit", month: "long" }).toUpperCase(),
           originalDate: item.date, 
-          time: item.time || "", // если появится поле time
+          time: item.time || "",
           category: item.category,
           instructor: item.instructor || "",
           maxStudents: item.maxStudents,

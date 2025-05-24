@@ -1,11 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import "./styles/Footer.css";
-import youtubeIcon from "../assets/icons/youtube.svg";
-import vkIcon from "../assets/icons/vk.svg";
-import telegramIcon from "../assets/icons/telegram.svg";
-import tiktokIcon from "../assets/icons/tiktok.svg";
-import logoIcon from "../assets/icons/logoo.svg";
+import "../styles/Footer.css";
+import youtubeIcon from "../../assets/icons/youtube.svg";
+import vkIcon from "../../assets/icons/vk.svg";
+import telegramIcon from "../../assets/icons/telegram.svg";
+import tiktokIcon from "../../assets/icons/tiktok.svg";
+import logoIcon from "../../assets/icons/logoo.svg";
 export default function Footer() {
   return (
     <footer className="footer">

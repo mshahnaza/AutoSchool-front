@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/shared/Header";
+import Footer from "./components/shared/Footer";
 import Tabs from "./components/Schedule/Tabs";
 import ProfilePage from "./components/ProfilePage";
 import Branches from "./components/branches/Branches";
-import RoadAnimation from "./components/RoadAnimation";
+import RoadAnimation from "./components/shared/RoadAnimation";
 import ExamDetailPage from "./components/Schedule/ExamDetails"; 
 
 function App() {

@@ -1,6 +1,6 @@
 import React from "react";
-import carIcon from "../assets/icons/image.svg";
-import "./styles/RoadAnimation.css";
+import carIcon from "../../assets/icons/image.svg";
+import "../styles/RoadAnimation.css";
 
 export default function RoadAnimation() {
   return (
