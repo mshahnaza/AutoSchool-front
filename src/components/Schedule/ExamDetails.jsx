@@ -1,20 +1,60 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../styles/ExamDetails.css";
 
-// ...existing imports...
 export default function ExamDetailPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
   const {
+    id, // examDayId должен быть передан из таблицы (добавьте его в state при переходе!)
     date,
+    originalDate, 
     title,
     address,
     category,
     instructor,
-    type // "theory" или "practice"
+    type
   } = location.state || {};
+
+  const [slots, setSlots] = useState([]);
+  const [selectedInstructor, setSelectedInstructor] = useState(null);
+
+  useEffect(() => {
+    if (id) {
+      axios.get(`/api/v1/slot/exam-day-id/${id}`)
+        .then(res => setSlots(res.data))
+        .catch(() => setSlots([]));
+    }
+  }, [id]);
+
+  const handleBook = async (slotId) => {
+    try {
+      const studentId = 1;
+      const examDate = originalDate;
+      const takenAt = examDate;
+      const expirationAt = new Date(examDate);
+      expirationAt.setMonth(expirationAt.getMonth() + 3);
+      const expirationAtStr = expirationAt.toISOString().slice(0, 10);
+
+      await axios.post("/api/v1/exam/create", {
+        id: null,
+        result: "PENDING",
+        remarks: null,
+        expirationAt: expirationAtStr,
+        takenAt,
+        studentId,
+        slotId,
+      });
+      const res = await axios.get(`/api/v1/slot/exam-day-id/${id}`);
+      setSlots(res.data);
+      alert("Вы успешно записались!");
+    } catch (e) {
+      alert("Ошибка при бронировании слота");
+      console.error("Ошибка при бронировании слота:", e?.response?.data || e);
+    }
+  };
 
   if (!date || !type) {
     return (
@@ -24,8 +64,6 @@ export default function ExamDetailPage() {
       </div>
     );
   }
-
-  const timeSlots = ["8:00", "10:00", "12:00"];
 
   return (
     <div className="exam-details-container">
@@ -41,35 +79,54 @@ export default function ExamDetailPage() {
         <thead>
           <tr>
             <th>Время</th>
+            {type === "practice" && <th>Инструктор</th>}
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {timeSlots.map((time, index) => (
-            <tr key={index}>
-              <td className="time-cell">{time}</td>
+          {slots.map((slot, index) => (
+            <tr key={slot.id || index}>
+              <td
+                className="time-cell"
+                onClick={() => {
+                  if (type === "theory") setSelectedInstructor(slot.instructorName || "");
+                  if (type === "practice") setSelectedInstructor(slot.instructor?.user?.name || "");
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                {slot.time}
+              </td>
+              {type === "practice" && (
+                <td>{slot.instructor?.user?.name || "-"}</td>
+              )}
               <td>
-                <button
-                  className="signup-btn"
-                  onClick={() =>
-                    alert(
-                      `Вы записались на ${date} в ${time}${
-                        type === "practice" && category
-                          ? ` (Категория: ${category})`
-                          : ""
-                      }${type === "practice" && instructor
-                        ? `, инструктор: ${instructor}`
-                        : ""}`
-                    )
-                  }
-                >
-                  Записаться
-                </button>
+                {slot.isBooked ? (
+                  <button
+                    className="signup-btn"
+                    style={{ background: "#e53935", cursor: "not-allowed" }}
+                    disabled
+                  >
+                    Занято
+                  </button>
+                ) : (
+                  <button
+                    className="signup-btn"
+                    onClick={() => handleBook(slot.id)}
+                  >
+                    Записаться
+                  </button>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {selectedInstructor && (
+        <div style={{ marginTop: 16, fontWeight: 500 }}>
+          Инструктор: {selectedInstructor}
+        </div>
+      )}
 
       <button className="back-btn" onClick={() => navigate(-1)}>
         Назад

@@ -1,44 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TheoryExamTable from "./TheoryExamTable";
 import PracticeExamTable from "./PracticeExamTable";
+import axios from "axios";
 import "../styles/Tabs.css";
-
-const examData = {
-  theory: [
-    {
-      title: "Какое-то место",
-      address: "Какой-то адрес",
-      exams: [
-        { date: "21 МАЯ", time: "8:00" },
-        { date: "23 МАЯ", time: "8:00" },
-        { date: "28 МАЯ", time: "8:00" },
-        { date: "30 МАЯ", time: "8:00" }
-      ]
-    }
-  ],
-  practice: [
-    {
-      title: "АЮ Grand",
-      address: "ул. Чокана Валиханова, 2а",
-      exams: [
-        { date: "22 МАЯ", category: "A", instructor: "Иванов И.И." },
-        { date: "24 МАЯ", category: "B", instructor: "Петров П.П." },
-        { date: "22 МАЯ", category: "B", instructor: "Сидоров С.С." }
-      ]
-    },
-    {
-      title: "Сокулукский район",
-      address: "M39, ул. Шопокова",
-      exams: [
-        { date: "23 МАЯ", category: "A" },
-        { date: "30 МАЯ", category: "C" }
-      ]
-    }
-  ]
-};
 
 export default function Tabs() {
   const [activeTab, setActiveTab] = useState("theory");
+  const [theoryBlocks, setTheoryBlocks] = useState([]);
+  const [practiceBlocks, setPracticeBlocks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get("/api/v1/exam-day/get-all").then(res => {
+      const data = res.data;
+      console.log("API response:", res.data);
+
+      // Группируем по филиалам и типу экзамена
+      const theoryMap = {};
+      const practiceMap = {};
+
+      data.forEach(item => {
+        const branchKey = item.branch.id;
+        const branchInfo = {
+          title: item.branch.name,
+          address: item.branch.address,
+          phone: item.branch.phone
+        };
+        const exam = {
+          id: item.id,
+          date: new Date(item.date).toLocaleDateString("ru-RU", { day: "2-digit", month: "long" }).toUpperCase(),
+          originalDate: item.date, 
+          time: item.time || "", // если появится поле time
+          category: item.category,
+          instructor: item.instructor || "",
+          maxStudents: item.maxStudents,
+          currentStudents: item.currentStudents
+        };
+
+        if (item.examType === "THEORETICAL") {
+          if (!theoryMap[branchKey]) {
+            theoryMap[branchKey] = { ...branchInfo, exams: [] };
+          }
+          theoryMap[branchKey].exams.push(exam);
+        } else if (item.examType === "PRACTICAL") {
+          if (!practiceMap[branchKey]) {
+            practiceMap[branchKey] = { ...branchInfo, exams: [] };
+          }
+          practiceMap[branchKey].exams.push(exam);
+        }
+      });
+
+      setTheoryBlocks(Object.values(theoryMap));
+      setPracticeBlocks(Object.values(practiceMap));
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return <div>Загрузка...</div>;
 
   return (
     <section>
@@ -58,20 +76,22 @@ export default function Tabs() {
       </div>
       <div>
         {activeTab === "theory" &&
-          examData.theory.map((block, idx) => (
+          theoryBlocks.map((block, idx) => (
             <TheoryExamTable
               key={idx}
               title={block.title}
               address={block.address}
+              phone={block.phone}
               exams={block.exams}
             />
           ))}
         {activeTab === "practice" &&
-          examData.practice.map((block, idx) => (
+          practiceBlocks.map((block, idx) => (
             <PracticeExamTable
               key={idx}
               title={block.title}
               address={block.address}
+              phone={block.phone}
               exams={block.exams}
             />
           ))}

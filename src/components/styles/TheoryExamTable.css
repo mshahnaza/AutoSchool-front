@@ -42,3 +42,16 @@
 .exam-table tr:nth-child(even) td {
   background: #f3f6fa;
 }
+
+.exam-phone {
+  margin: 12px 0 20px 0;
+  font-weight: 500;
+  font-size: 1.08em;
+  color: #000000;
+  letter-spacing: 0.5px;
+}
+
+.exam-phone a {
+  color: #535252;
+  text-decoration: none;
+}
