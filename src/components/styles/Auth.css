@@ -1,0 +1,124 @@
+/* Общие стили */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #e0f2fe, #ffffff);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.auth-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 40px 50px 40px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.3s ease;
+}
+
+.auth-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.auth-card h2 {
+  margin-bottom: 32px;
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  color: #1e3a8a;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  border: 1.8px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.auth-input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 5px #3b82f6;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 14px 0;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.auth-button:hover {
+  background-color: #2563eb;
+}
+
+.role-button {
+  padding: 14px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border: 2.5px solid #3b82f6;
+  background: white;
+  color: #3b82f6;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.role-button:hover {
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* Для кнопки "Назад" */
+.auth-button.back-button {
+  background-color: #6b7280;
+  margin-top: 20px;
+}
+
+.auth-button.back-button:hover {
+  background-color: #4b5563;
+}
+
+/* Ошибка */
+.error-message {
+  color: #dc2626;
+  margin-top: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Чтобы кнопки в режиме "login" располагались красиво */
+.auth-card > button.role-button:not(:last-child) {
+  margin-bottom: 12px;
+}
+.auth-form {
+  width: 100%;          /* форма занимает всю ширину карточки */
+  max-width: 380px;     /* можно настроить по желанию */
+  margin: 0 auto;       /* центрируем форму */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;            /* расстояние между элементами */
+}
+
+.auth-input,
+.auth-button,
+.role-button {
+  width: 100%;          /* все элементы растягиваются на всю ширину формы */
+  box-sizing: border-box; /* учитываем паддинги и бордеры */
+}
