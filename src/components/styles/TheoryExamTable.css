@@ -54,4 +54,11 @@
 .exam-phone a {
   color: #535252;
   text-decoration: none;
+  transition: color 0.2s, text-decoration 0.2s;
+}
+
+.exam-phone a:hover {
+  color: #1976d2;
+  text-decoration: underline;
+  cursor: pointer;
 }
