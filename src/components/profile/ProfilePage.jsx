@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import "./styles/ProfilePage.css";
-import defaultAvatar from "../assets/icons/default-avatar.svg";
-import ExamsInfo from "./ExamsInfo"; // импортируем новый компонент
+import "../styles/ProfilePage.css";
+import defaultAvatar from "../../assets/icons/default-avatar.svg";
+import ExamsInfo from "./ExamsInfo";
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState(() => {

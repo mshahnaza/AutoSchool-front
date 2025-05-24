@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Header from "./components/shared/Header";
 import Footer from "./components/shared/Footer";
 import Tabs from "./components/Schedule/Tabs";
-import ProfilePage from "./components/ProfilePage";
+import ProfilePage from "./components/profile/ProfilePage";
 import Branches from "./components/branches/Branches";
 import RoadAnimation from "./components/shared/RoadAnimation";
 import ExamDetailPage from "./components/Schedule/ExamDetails"; 
-import AuthPage from "./components/AuthPage";
+import AuthPage from "./components/auth/AuthPage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

@@ -3,6 +3,7 @@ import TheoryExamTable from "./TheoryExamTable";
 import PracticeExamTable from "./PracticeExamTable";
 import axios from "axios";
 import "../styles/Tabs.css";
+import Loader from "../shared/Loader";
 
 export default function Tabs() {
   const [activeTab, setActiveTab] = useState("theory");
@@ -11,6 +12,7 @@ export default function Tabs() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     axios.get("/api/v1/exam-day/get-all").then(res => {
       const data = res.data;
       console.log("API response:", res.data);
@@ -55,7 +57,14 @@ export default function Tabs() {
     });
   }, []);
 
-  if (loading) return <div>Загрузка...</div>;
+  if (loading) return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
+      <Loader />
+      <div style={{ marginTop: 18, fontSize: "1.1rem", color: "#1976d2", fontWeight: 500 }}>
+        Загрузка...
+      </div>
+    </div>
+  );
 
   return (
     <section>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Branches.css";
+import Loader from "../shared/Loader";
 
 const Branches = () => {
   const [branches, setBranches] = useState([]);
@@ -24,7 +25,14 @@ const Branches = () => {
       });
   }, []);
 
-  if (loading) return <p className="status-message">Загрузка филиалов...</p>;
+  if (loading) return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
+        <Loader />
+        <div style={{ marginTop: 18, fontSize: "1.1rem", color: "#1976d2", fontWeight: 500 }}>
+        Загрузка...
+        </div>
+    </div>
+    );
   if (error) return <p className="status-message error">Ошибка: {error}</p>;
 
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles/ExamsInfo.css";
+import "../styles/ExamsInfo.css";
 
 export default function ExamsInfo({ exams }) {
   const { theory, practice } = exams;

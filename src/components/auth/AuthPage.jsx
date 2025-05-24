@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LoginForm from "./LoginForm";
 import RegisterFormStudent from "./RegisterFormStudent";
 import RegisterFormInstructor from "./RegisterFormInstructor";
-import "./styles/Auth.css";
+import "../styles/Auth.css";
 
 const AuthPage = ({ setIsAuthenticated }) => {
   // режимы: login, registerTypeSelection, student, instructor
