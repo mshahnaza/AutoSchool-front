@@ -1,47 +1,115 @@
+/* Общие стили страницы */
 .branches-container {
-  min-height: 100vh;
-  padding: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #1e293b; /* темно-синий */
 }
 
+.page-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Состояния загрузки и ошибки */
+.status-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #334155;
+  margin-top: 3rem;
+}
+
+.status-message.error {
+  color: #dc2626; /* красный для ошибки */
+}
+
+/* Сетка карточек */
 .branches-grid {
   display: grid;
-  gap: 2.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
 }
 
+/* Карточка филиала */
 .branch-card {
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  color: #000002; /* Тёмно-голубой */
+  background-color: #f8fafc; /* светло-серый фон */
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+.branch-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 16px rgb(0 0 0 / 0.15);
+}
+
+/* Заголовок филиала */
 .branch-title {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  color: #0f172a;
+  margin-bottom: 1rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: #060606; /* Тёмно-синий */
 }
 
-.branch-map {
-  margin: 1rem 0;
-  border-radius: 0.5rem;
-  overflow: hidden;
+/* Текстовая информация */
+.branch-info {
+  font-size: 1rem;
+  margin: 0.4rem 0;
+  color: #334155;
 }
 
-.branch-link {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background-color: #2563eb; /* Голубая кнопка */
-  color: white;
-  border-radius: 0.5rem;
+/* Телефон как ссылка */
+.phone-link {
+  color: #2563eb;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
-.branch-link:hover {
-  background-color: #1d4ed8;
-  color: black; 
+.phone-link:hover {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+/* Ссылка на карту */
+.map-link {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1rem;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  text-decoration: none;
+  align-self: flex-start;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 6px rgb(37 99 235 / 0.5);
+}
+
+.map-link:hover {
+  background-color: #1e40af;
+  box-shadow: 0 5px 10px rgb(30 64 175 / 0.6);
+  color: #e0e7ff;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .branch-card {
+    padding: 1rem 1.2rem;
+  }
+  .branch-title {
+    font-size: 1.25rem;
+  }
+  .map-link {
+    width: 100%;
+    text-align: center;
+  }
 }
