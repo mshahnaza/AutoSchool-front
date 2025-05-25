@@ -176,38 +176,45 @@ export default function Tabs() {
       {showFilter && (
         <div className="filter-modal-bg">
           <div className="filter-modal">
-            <label>
-              Дата:
-              <input
-                type="date"
-                value={tempDate}
-                onChange={e => setTempDate(e.target.value)}
-              />
-            </label>
-            {activeTab === "practice" && (
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                applyFilters();
+              }}
+            >
               <label>
-                Категория:
+                Дата:
                 <input
-                  type="text"
-                  value={tempCategory}
-                  onChange={e => setTempCategory(e.target.value)}
-                  placeholder="например, B(на англ.)"
+                  type="date"
+                  value={tempDate}
+                  onChange={e => setTempDate(e.target.value)}
                 />
               </label>
-            )}
-            <label>
-              Филиал:
-              <input
-                type="text"
-                value={tempBranch}
-                onChange={e => setTempBranch(e.target.value)}
-                placeholder="Название филиала"
-              />
-            </label>
-            <div className="filter-modal-actions">
-              <button className="apply" onClick={applyFilters}>Применить</button>
-              <button className="cancel" onClick={() => setShowFilter(false)}>Отмена</button>
-            </div>
+              {activeTab === "practice" && (
+                <label>
+                  Категория:
+                  <input
+                    type="text"
+                    value={tempCategory}
+                    onChange={e => setTempCategory(e.target.value)}
+                    placeholder="например, B(на англ.)"
+                  />
+                </label>
+              )}
+              <label>
+                Филиал:
+                <input
+                  type="text"
+                  value={tempBranch}
+                  onChange={e => setTempBranch(e.target.value)}
+                  placeholder="Название филиала"
+                />
+              </label>
+              <div className="filter-modal-actions">
+                <button className="apply" type="submit">Применить</button>
+                <button className="cancel" type="button" onClick={() => setShowFilter(false)}>Отмена</button>
+              </div>
+            </form>
           </div>
         </div>
       )}

@@ -10,10 +10,14 @@ export default function ExamDetailPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [filterTime, setFilterTime] = useState("");
+  const [filterInstructor, setFilterInstructor] = useState("");
+  const [filterBooked, setFilterBooked] = useState("");
+
   const {
-    id, 
+    id,
     date,
-    originalDate, 
+    originalDate,
     title,
     address,
     category,
@@ -22,6 +26,7 @@ export default function ExamDetailPage() {
   } = location.state || {};
 
   const [slots, setSlots] = useState([]);
+  const [allInstructors, setAllInstructors] = useState([]);
   const [selectedInstructor, setSelectedInstructor] = useState(null);
 
   const [alertOpen, setAlertOpen] = useState(false);
@@ -29,66 +34,148 @@ export default function ExamDetailPage() {
   const [alertDetails, setAlertDetails] = useState({});
 
   useEffect(() => {
-    if (id) {
-      setLoading(true);
+    if (type === "practice" && id) {
       axios.get(`/api/v1/slot/exam-day-id/${id}`)
-        .then(res => setSlots(res.data))
-        .catch(() => setSlots([]))
-        .finally(() => setLoading(false));
+        .then(res => {
+          const instructors = [];
+          res.data.forEach(slot => {
+            if (slot.instructor && !instructors.find(i => i.id === slot.instructor.id)) {
+              instructors.push(slot.instructor);
+            }
+          });
+          setAllInstructors(instructors);
+        });
     }
-  }, [id]);
+  }, [id, type]);
+
+  useEffect(() => {
+    if (!id) return;
+    setLoading(true);
+
+    let url = "";
+    let params = {};
+
+    const timeStr = filterTime ? (filterTime.length === 5 ? filterTime + ":00" : filterTime) : null;
+    const instructorId = filterInstructor ? filterInstructor : null;
+    const isBooked = filterBooked !== "" ? filterBooked : null;
+
+    // Все три фильтра
+    if (instructorId && isBooked !== null && timeStr) {
+      url = `/api/v1/slot/filter/examDay/${id}/instructor/${instructorId}/booked/${isBooked}/time`;
+      params = { time: timeStr };
+    }
+    // Инструктор + статус
+    else if (instructorId && isBooked !== null) {
+      url = `/api/v1/slot/filter/examDay/${id}/instructor/${instructorId}/booked/${isBooked}`;
+    }
+    // Инструктор + время
+    else if (instructorId && timeStr) {
+      url = `/api/v1/slot/filter/examDay/${id}/instructor/${instructorId}/time`;
+      params = { time: timeStr };
+    }
+    // Только инструктор
+    else if (instructorId) {
+      url = `/api/v1/slot/filter/examDay/${id}/instructor/${instructorId}`;
+    }
+    // Статус + время
+    else if (isBooked !== null && timeStr) {
+      url = `/api/v1/slot/filter/examDay/${id}/booked/${isBooked}/time`;
+      params = { time: timeStr };
+    }
+    // Только статус
+    else if (isBooked !== null) {
+      url = `/api/v1/slot/filter/examDay/${id}/booked/${isBooked}`;
+    }
+    // Только время
+    else if (timeStr) {
+      url = `/api/v1/slot/filter/examDay/${id}/time`;
+      params = { time: timeStr };
+    }
+    // Без фильтров
+    else {
+      url = `/api/v1/slot/exam-day-id/${id}`;
+    }
+
+    axios.get(url, { params })
+      .then(res => setSlots(res.data))
+      .catch(() => setSlots([]))
+      .finally(() => setLoading(false));
+  }, [id, filterTime, filterInstructor, filterBooked]);
 
   const handleBook = async (slotId) => {
-  try {
-    setLoading(true);
-    
-    const studentId = 1;
-    const examDate = originalDate;
-    const takenAt = examDate;
-    const expirationAt = new Date(examDate);
-    expirationAt.setMonth(expirationAt.getMonth() + 3);
-    const expirationAtStr = expirationAt.toISOString().slice(0, 10);
+    try {
+      setLoading(true);
+      const studentId = 1;
+      const examDate = originalDate;
+      const takenAt = examDate;
+      const expirationAt = new Date(examDate);
+      expirationAt.setMonth(expirationAt.getMonth() + 3);
+      const expirationAtStr = expirationAt.toISOString().slice(0, 10);
 
-    const slot = slots.find(s => s.id === slotId);
+      const slot = slots.find(s => s.id === slotId);
 
-    await axios.post("/api/v1/exam/create", {
-      id: null,
-      result: "PENDING",
-      remarks: null,
-      expirationAt: expirationAtStr,
-      takenAt,
-      studentId,
-      slotId,
-    });
-    const res = await axios.get(`/api/v1/slot/exam-day-id/${id}`);
-    setSlots(res.data);
-    setAlertMsg("Вы успешно записались!");
-    setAlertDetails(
-      type === "practice"
-        ? {
-            date,
-            time: slot?.time,
-            category,
-            instructor: slot?.instructor?.user?.name,
-            address, // добавлено место
-          }
-        : {
-            date,
-            time: slot?.time,
-            category,
-            address, // добавлено место
-          }
-    );
-    setAlertOpen(true);
+      await axios.post("/api/v1/exam/create", {
+        id: null,
+        result: "PENDING",
+        remarks: null,
+        expirationAt: expirationAtStr,
+        takenAt,
+        studentId,
+        slotId,
+      });
 
-  } catch (e) {
-    setAlertMsg("Ошибка при бронировании слота");
-    setAlertOpen(true);
-    console.error("Ошибка при бронировании слота:", e?.response?.data || e);
-  } finally {
-    setLoading(false);
-  }
-};
+      // Обновить список слотов после записи
+      let url = `/api/v1/slot/exam-day-id/${id}`;
+      let params = {};
+      if (filterInstructor && filterBooked !== "" && filterTime) {
+        url = `/api/v1/slot/filter/examDay/${id}/instructor/${filterInstructor}/booked/${filterBooked}/time`;
+        params = { time: filterTime.length === 5 ? filterTime + ":00" : filterTime };
+      } else if (filterInstructor && filterBooked !== "") {
+        url = `/api/v1/slot/filter/examDay/${id}/instructor/${filterInstructor}/booked/${filterBooked}`;
+      } else if (filterInstructor && filterTime) {
+        url = `/api/v1/slot/filter/examDay/${id}/instructor/${filterInstructor}/time`;
+        params = { time: filterTime.length === 5 ? filterTime + ":00" : filterTime };
+      } else if (filterInstructor) {
+        url = `/api/v1/slot/filter/examDay/${id}/instructor/${filterInstructor}`;
+      } else if (filterBooked !== "" && filterTime) {
+        url = `/api/v1/slot/filter/examDay/${id}/booked/${filterBooked}/time`;
+        params = { time: filterTime.length === 5 ? filterTime + ":00" : filterTime };
+      } else if (filterBooked !== "") {
+        url = `/api/v1/slot/filter/examDay/${id}/booked/${filterBooked}`;
+      } else if (filterTime) {
+        url = `/api/v1/slot/filter/examDay/${id}/time`;
+        params = { time: filterTime.length === 5 ? filterTime + ":00" : filterTime };
+      }
+      const res = await axios.get(url, { params });
+      setSlots(res.data);
+
+      setAlertMsg("Вы успешно записались!");
+      setAlertDetails(
+        type === "practice"
+          ? {
+              date,
+              time: slot?.time,
+              category,
+              instructor: slot?.instructor?.user?.name,
+              address,
+            }
+          : {
+              date,
+              time: slot?.time,
+              category,
+              address,
+            }
+      );
+      setAlertOpen(true);
+
+    } catch (e) {
+      setAlertMsg("Ошибка при бронировании слота");
+      setAlertOpen(true);
+      console.error("Ошибка при бронировании слота:", e?.response?.data || e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!date || !type) {
     return (
@@ -108,6 +195,61 @@ export default function ExamDetailPage() {
         {type === "practice" && category ? `, категория: ${category}` : ""}
         {type === "practice" && instructor ? `, инструктор: ${instructor}` : ""}
       </h3>
+
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 16, margin: "18px 0" }}>
+        <label>
+          Время:&nbsp;
+          <input
+            type="time"
+            value={filterTime}
+            onChange={e => setFilterTime(e.target.value)}
+            style={{ fontSize: "1rem", padding: "4px 10px", borderRadius: 6, border: "1px solid #bdbdbd" }}
+          />
+        </label>
+        {type === "practice" && (
+          <label>
+            Инструктор:&nbsp;
+            <select
+              value={filterInstructor}
+              onChange={e => setFilterInstructor(e.target.value)}
+              style={{ fontSize: "1rem", padding: "4px 10px", borderRadius: 6, border: "1px solid #bdbdbd" }}
+            >
+              <option value="">Все</option>
+              {allInstructors.map(instr => (
+                <option key={instr.id} value={instr.id}>
+                  {instr.user?.name || "Без имени"}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+        <label>
+          Статус:&nbsp;
+          <select
+            value={filterBooked}
+            onChange={e => setFilterBooked(e.target.value)}
+            style={{ fontSize: "1rem", padding: "4px 10px", borderRadius: 6, border: "1px solid #bdbdbd" }}
+          >
+            <option value="">Все</option>
+            <option value="false">Свободно</option>
+            <option value="true">Занято</option>
+          </select>
+        </label>
+        {(filterTime || filterInstructor || filterBooked !== "") && (
+          <button
+            className="filter-btn reset-btn"
+            type="button"
+            onClick={() => {
+              setFilterTime("");
+              setFilterInstructor("");
+              setFilterBooked("");
+            }}
+            style={{ marginLeft: 0, marginTop: 8 }}
+          >
+            Сбросить фильтры
+          </button>
+        )}
+      </div>
 
       <table className="exam-table">
         <thead>

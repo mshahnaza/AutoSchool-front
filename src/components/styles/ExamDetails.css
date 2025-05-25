@@ -89,3 +89,19 @@
 .exam-details-container .exam-table td:last-child {
   text-align: right;
 }
+
+.reset-btn {
+  background: #fff;
+  color: #383838;
+  border: 1.5px solid #000000;
+  font-size: 0.95rem;
+  padding: 4px 14px;
+  border-radius: 8px;
+  margin-left: 0;
+  margin-top: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+.reset-btn:hover {
+  background: #d6d6d6;
+  color: #000000;
+}
