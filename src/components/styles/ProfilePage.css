@@ -58,7 +58,8 @@
 }
 
 .edit-btn,
-.save-btn {
+.save-btn,
+.logout-btn {
   padding: 0.75rem 1.25rem;
   font-size: 1rem;
   border: none;
@@ -77,6 +78,10 @@
 
 .save-btn {
   background-color: #10b981;
+  color: white;
+}
+.logout-btn{
+  background-color: #2563eb;
   color: white;
 }
 .avatar-section {
@@ -107,4 +112,14 @@
 .upload-btn:hover {
   background-color: #374151;
 }
+
+
+.logout-btn:hover {
+  background-color: #c0392b;
+}
+
+.edit-btn:hover {
+  background-color: #10b981;
+}
+
 

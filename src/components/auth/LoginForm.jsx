@@ -10,14 +10,19 @@ const LoginForm = ({ onSuccess }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:8888/api/v1/auth/login", formData);
-      onSuccess(response.data.tokens);
-    } catch (err) {
-      setError("Неверные данные или ошибка сервера");
-    }
-  };
+  e.preventDefault();
+  try {
+    const response = await axios.post("http://localhost:8888/api/v1/auth/login", formData);
+    const { accessToken, userEmail } = response.data.tokens;
+
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("userEmail", formData.email); // сохраняем email
+    onSuccess(accessToken);
+  } catch (err) {
+    setError("Неверные данные или ошибка сервера");
+  }
+};
+
 
   return (
     <form onSubmit={handleSubmit} className="auth-form">

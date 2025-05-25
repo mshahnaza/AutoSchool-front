@@ -1,33 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../styles/ProfilePage.css";
 import defaultAvatar from "../../assets/icons/default-avatar.svg";
 import ExamsInfo from "./ExamsInfo";
 
 export default function ProfilePage() {
-  const [userData, setUserData] = useState(() => {
-  const storedData = localStorage.getItem("userData");
-  return storedData
-    ? JSON.parse(storedData)
-    : {
-        name: "Иван Иванов",
-        email: "ivan@example.com",
-        phone: "+7 (999) 123-45-67",
-        passportId: "1234 567890",
-        about: "Преподаватель математики с 5-летним стажем.",
-        avatar: localStorage.getItem("userAvatar") || null,
-        exams: {
-          theory: { score: 19, maxScore: 20, date: "2025-05-10" },
-          practice: { passed: true, date: "2025-05-15" },
-        },
-      };
-});
-
+  const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [tempData, setTempData] = useState(userData);
+  const [tempData, setTempData] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("accessToken");
+      const email = localStorage.getItem("userEmail");
+      if (!token || !email) return;
+
+      try {
+        const savedProfile = localStorage.getItem("userProfile");
+        let localData = savedProfile ? JSON.parse(savedProfile) : null;
+
+        const response = await axios.get("http://localhost:8888/api/v1/user/by-email", {
+          params: { email },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        let serverData = response.data;
+
+        if (localData) {
+          serverData = {
+            ...serverData,
+            about: localData.about ?? serverData.about,
+            avatar: localData.avatar ?? serverData.avatar,
+          };
+        }
+
+        setUserData(serverData);
+        setTempData(serverData);
+      } catch (err) {
+        console.error("Ошибка при получении данных профиля", err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setTempData((prev) => ({ ...prev, [name]: value }));
+    if (name === "about") {
+      setTempData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleAvatarChange = (e) => {
@@ -37,22 +62,38 @@ export default function ProfilePage() {
       reader.onloadend = () => {
         const base64 = reader.result;
         setTempData((prev) => ({ ...prev, avatar: base64 }));
-        localStorage.setItem("userAvatar", base64);
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleEdit = () => {
-    setTempData(userData);
     setIsEditing(true);
   };
 
   const handleSave = () => {
-  setUserData(tempData);
-  localStorage.setItem("userData", JSON.stringify(tempData)); // <- сохранение
-  setIsEditing(false);
+    const updatedData = {
+      avatar: tempData.avatar,
+      about: tempData.about,
+    };
+
+    setUserData((prev) => ({
+      ...prev,
+      ...updatedData,
+    }));
+
+    setIsEditing(false);
+    localStorage.setItem("userProfile", JSON.stringify(updatedData));
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userProfile");
+    navigate("/login");
+  };
+
+  if (!userData) return <div>Загрузка...</div>;
 
   return (
     <div className="profile-container">
@@ -80,58 +121,22 @@ export default function ProfilePage() {
 
         <div className="profile-field">
           <label>Имя:</label>
-          {isEditing ? (
-            <input
-              type="text"
-              name="name"
-              value={tempData.name}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{userData.name}</span>
-          )}
+          <span>{userData.name}</span>
         </div>
 
         <div className="profile-field">
           <label>Email:</label>
-          {isEditing ? (
-            <input
-              type="email"
-              name="email"
-              value={tempData.email}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{userData.email}</span>
-          )}
+          <span>{userData.email}</span>
         </div>
 
         <div className="profile-field">
-          <label>Номер телефона:</label>
-          {isEditing ? (
-            <input
-              type="text"
-              name="phone"
-              value={tempData.phone}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{userData.phone}</span>
-          )}
+          <label>Телефон:</label>
+          <span>{userData.phone}</span>
         </div>
 
         <div className="profile-field">
-          <label>Паспорт ID:</label>
-          {isEditing ? (
-            <input
-              type="text"
-              name="passportId"
-              value={tempData.passportId}
-              onChange={handleChange}
-            />
-          ) : (
-            <span>{userData.passportId}</span>
-          )}
+          <label>Дата рождения:</label>
+          <span>{userData.dateOfBirth ? userData.dateOfBirth.substring(0, 10) : "не указано"}</span>
         </div>
 
         <div className="profile-field">
@@ -139,8 +144,7 @@ export default function ProfilePage() {
           {isEditing ? (
             <textarea
               name="about"
-              rows="4"
-              value={tempData.about}
+              value={tempData.about || ""}
               onChange={handleChange}
             />
           ) : (
@@ -148,18 +152,23 @@ export default function ProfilePage() {
           )}
         </div>
 
-        {isEditing ? (
-          <button className="save-btn" onClick={handleSave}>
-            Сохранить
-          </button>
-        ) : (
-          <button className="edit-btn" onClick={handleEdit}>
-            Редактировать
-          </button>
-        )}
+        <div className="button-group">
+          {isEditing ? (
+            <button className="save-btn" onClick={handleSave}>
+              Сохранить
+            </button>
+          ) : (
+            <button className="edit-btn" onClick={handleEdit}>
+              Редактировать
+            </button>
+          )}
 
-        {/* Вставляем компонент экзаменов */}
-        <ExamsInfo exams={userData.exams} />
+          <button className="logout-btn" onClick={handleLogout}>
+            Выйти
+          </button>
+        </div>
+
+        {userData.exams && <ExamsInfo exams={userData.exams} />}
       </div>
     </div>
   );
