@@ -3,7 +3,7 @@ import "../styles/Loader.css";
 
 export default function Loader() {
   return (
-    <div className="loader-backdrop">
+    <div className="loader-backdrop" style={{ flexDirection: "column", alignItems: "center", display: "flex" }}>
       <svg width="80" height="80" viewBox="0 0 80 80">
         <ellipse
             cx="40"
@@ -68,8 +68,18 @@ export default function Loader() {
             strokeWidth="2"
           />
         </g>
-        </svg>
-
+      </svg>
+      <div
+        style={{
+          marginTop: 18,
+          marginLeft: 18,
+          fontSize: "1.1rem",
+          color: "#000",
+          fontWeight: 500
+        }}
+      >
+        Загрузка...
+      </div>
     </div>
   );
 }

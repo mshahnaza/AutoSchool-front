@@ -35,7 +35,7 @@ export default function PracticeExamTable({ title, address, phone, exams }) {
                     title,
                     address,
                     category: row.category,
-                    instructor: row.instructor, // передаем, но не показываем
+                    instructor: row.instructor,
                     type: "practice"
                   }
                 })

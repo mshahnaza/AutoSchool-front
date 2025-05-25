@@ -26,12 +26,7 @@ const Branches = () => {
   }, []);
 
   if (loading) return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
-        <Loader />
-        <div style={{ marginTop: 18, fontSize: "1.1rem", color: "#1976d2", fontWeight: 500 }}>
-        Загрузка...
-        </div>
-    </div>
+    <Loader />
     );
   if (error) return <p className="status-message error">Ошибка: {error}</p>;
 
