@@ -33,9 +33,14 @@ export default function ExamDetailPage() {
   const [alertMsg, setAlertMsg] = useState("");
   const [alertDetails, setAlertDetails] = useState({});
 
+  const token = localStorage.getItem("accessToken");
+  const studentId = localStorage.getItem("studentId");
+
   useEffect(() => {
     if (type === "practice" && id) {
-      axios.get(`/api/v1/slot/exam-day-id/${id}`)
+      axios.get(`/api/v1/slot/exam-day-id/${id}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      })
         .then(res => {
           const instructors = [];
           res.data.forEach(slot => {
@@ -46,7 +51,7 @@ export default function ExamDetailPage() {
           setAllInstructors(instructors);
         });
     }
-  }, [id, type]);
+  }, [id, type, token]);
 
   useEffect(() => {
     if (!id) return;
@@ -96,16 +101,18 @@ export default function ExamDetailPage() {
       url = `/api/v1/slot/exam-day-id/${id}`;
     }
 
-    axios.get(url, { params })
+    axios.get(url, {
+      params,
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    })
       .then(res => setSlots(res.data))
       .catch(() => setSlots([]))
       .finally(() => setLoading(false));
-  }, [id, filterTime, filterInstructor, filterBooked]);
+  }, [id, filterTime, filterInstructor, filterBooked, token]);
 
   const handleBook = async (slotId) => {
     try {
       setLoading(true);
-      const studentId = 1;
       const examDate = originalDate;
       const takenAt = examDate;
       const expirationAt = new Date(examDate);
@@ -122,6 +129,8 @@ export default function ExamDetailPage() {
         takenAt,
         studentId,
         slotId,
+      }, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
 
       // Обновить список слотов после записи
@@ -146,7 +155,10 @@ export default function ExamDetailPage() {
         url = `/api/v1/slot/filter/examDay/${id}/time`;
         params = { time: filterTime.length === 5 ? filterTime + ":00" : filterTime };
       }
-      const res = await axios.get(url, { params });
+      const res = await axios.get(url, {
+        params,
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
       setSlots(res.data);
 
       setAlertMsg("Вы успешно записались!");
@@ -169,7 +181,11 @@ export default function ExamDetailPage() {
       setAlertOpen(true);
 
     } catch (e) {
-      setAlertMsg("Ошибка при бронировании слота");
+      const backendMsg =
+        e?.response?.data?.message ||
+        (typeof e?.response?.data === "string" ? e.response.data : null);
+
+      setAlertMsg(backendMsg || "Ошибка при бронировании слота");
       setAlertOpen(true);
       console.error("Ошибка при бронировании слота:", e?.response?.data || e);
     } finally {

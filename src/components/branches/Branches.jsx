@@ -6,9 +6,13 @@ const Branches = () => {
   const [branches, setBranches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
-    fetch("http://localhost:8888/api/v1/branch/get-all")
+    fetch("http://localhost:8888/api/v1/branch/get-all", {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Ошибка при загрузке филиалов");

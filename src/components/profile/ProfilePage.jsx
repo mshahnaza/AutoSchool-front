@@ -90,6 +90,8 @@ export default function ProfilePage() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userProfile");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("studentId");
     navigate("/login");
   };
 

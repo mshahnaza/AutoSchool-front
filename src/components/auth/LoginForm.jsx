@@ -13,10 +13,11 @@ const LoginForm = ({ onSuccess }) => {
   e.preventDefault();
   try {
     const response = await axios.post("http://localhost:8888/api/v1/auth/login", formData);
-    const { accessToken, userEmail } = response.data.tokens;
+    const { accessToken, refreshToken } = response.data.tokens;
 
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("userEmail", formData.email); // сохраняем email
+
     onSuccess(accessToken);
   } catch (err) {
     setError("Неверные данные или ошибка сервера");

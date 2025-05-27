@@ -46,32 +46,37 @@ export default function Tabs() {
   };
 
   useEffect(() => {
-  setLoading(true);
+    setLoading(true);
 
-  let url = "/api/v1/exam-day/get-all";
-  let params = {};
+    let url = "/api/v1/exam-day/get-all";
+    let params = {};
 
-  if (filterDate && filterCategory) {
-    url = "/api/v1/exam-day/filter-by-date-category";
-    params = { date: filterDate, category: filterCategory, examType: "" };
-  } else if (filterDate) {
-    url = "/api/v1/exam-day/by-date";
-    params = { date: filterDate };
-  } else if (filterCategory) {
-    url = "/api/v1/exam-day/by-category";
-    params = { category: filterCategory };
-  }
+    if (filterDate && filterCategory) {
+      url = "/api/v1/exam-day/filter-by-date-category";
+      params = { date: filterDate, category: filterCategory, examType: "" };
+    } else if (filterDate) {
+      url = "/api/v1/exam-day/by-date";
+      params = { date: filterDate };
+    } else if (filterCategory) {
+      url = "/api/v1/exam-day/by-category";
+      params = { category: filterCategory };
+    }
 
-  axios.get(url, { params })
-    .then(res => {
-      setAllExams(res.data);
+    const token = localStorage.getItem("accessToken");
+
+    axios.get(url, {
+      params,
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
     })
-    .catch(() => {
-      setAllExams([]);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+      .then(res => {
+        setAllExams(res.data);
+      })
+      .catch(() => {
+        setAllExams([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 }, [filterDate, filterCategory, activeTab]);
 
   const theoryBlocks = [];
