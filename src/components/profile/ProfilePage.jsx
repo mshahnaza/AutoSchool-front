@@ -48,6 +48,15 @@ export default function ProfilePage() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const email = localStorage.getItem("userEmail");
+    if (!token || !email) {
+      navigate("/login");
+    }
+  }, [navigate]); 
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "about") {
@@ -87,12 +96,9 @@ export default function ProfilePage() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userProfile");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("studentId");
-    navigate("/login");
+    localStorage.clear();
+    setUserData(null);
+    window.location.href = "/login";
   };
 
   if (!userData) return <div>Загрузка...</div>;

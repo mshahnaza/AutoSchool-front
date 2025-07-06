@@ -43,14 +43,18 @@ const AuthPage = ({ setIsAuthenticated }) => {
 
         {mode === "student" && (
           <RegisterFormStudent
-            onSuccess={() => setIsAuthenticated(true)}
+            onSuccess={() => {
+              setMode("login")
+            }}
             onBack={() => setMode("registerTypeSelection")}
           />
         )}
 
         {mode === "instructor" && (
           <RegisterFormInstructor
-            onSuccess={() => setIsAuthenticated(true)}
+            onSuccess={() => {
+              setMode("login")
+            }}
             onBack={() => setMode("registerTypeSelection")}
           />
         )}

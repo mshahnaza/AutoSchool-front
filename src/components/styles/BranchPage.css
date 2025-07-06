@@ -1,0 +1,131 @@
+.branch-dashboard {
+  max-width: 950px;
+  margin: 40px auto 0 auto;
+  background: #f4f8fb;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px #1976d21a, 0 1.5px 8px #0001;
+  padding: 36px 32px 40px 32px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  min-height: 80vh;
+  border: 1.5px solid #e3eaf2;
+}
+
+.branch-section {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px 22px 22px 22px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 12px #1976d21a;
+  border: 1px solid #e3eaf2;
+  min-width: 320px;
+  transition: box-shadow 0.2s;
+}
+
+.branch-section h2 {
+  color: #1976d2;
+  font-size: 1.35rem;
+  margin-bottom: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.branch-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.branch-input {
+  padding: 10px 14px;
+  border: 1.5px solid #bdbdbd;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  background: #f8fafc;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.branch-input:focus {
+  border: 1.5px solid #1976d2;
+  box-shadow: 0 2px 8px #1976d21a;
+  background: #fff;
+}
+
+.branch-form-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.branch-btn {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 9px 22px;
+  border-radius: 7px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #1976d21a;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.branch-btn:hover {
+  background: #145ea8;
+  box-shadow: 0 4px 16px #1976d22a;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.branch-btn-cancel {
+  background: #bdbdbd;
+  color: #222;
+  box-shadow: none;
+}
+
+.branch-btn-cancel:hover {
+  background: #e0e0e0;
+  color: #1976d2;
+}
+
+.branch-btn-edit {
+  margin-left: 10px;
+  background: #43a047;
+  color: #fff;
+}
+
+.branch-btn-edit:hover {
+  background: #388e3c;
+}
+
+.branch-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.branch-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1.08rem;
+  transition: background 0.15s;
+}
+
+.branch-list-item:hover {
+  background: #f4f8fb;
+}
+
+.branch-list-item span:first-child {
+  flex: 1;
+}
+
+.branch-error {
+  color: #e53935;
+  margin-top: 18px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}

@@ -93,7 +93,7 @@ const RegisterFormStudent = ({ onSuccess, onBack }) => {
         required
         value={formData.passportId}
       />
-      <button className="auth-button" type="submit">
+      <button className="auth-button" type="submit" onClick={onSuccess}>
         Зарегистрироваться
       </button>
       <button

@@ -93,7 +93,7 @@ const RegisterFormInstructor = ({ onSuccess, onBack }) => {
         required
         value={formData.licenseNumber}
       />
-      <button className="auth-button" type="submit">
+      <button className="auth-button" type="submit" onClick={onSuccess}>
         Зарегистрироваться
       </button>
       <button

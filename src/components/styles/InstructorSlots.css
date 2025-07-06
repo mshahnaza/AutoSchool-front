@@ -1,0 +1,72 @@
+.instructor-dashboard {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Заголовок */
+.instructor-dashboard h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #333333;
+}
+
+/* Форма */
+.instructor-dashboard form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Метки и select */
+.instructor-dashboard label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #444444;
+}
+
+.instructor-dashboard select,
+.instructor-dashboard input[type="time"],
+.instructor-dashboard input[type="number"] {
+  padding: 12px 14px;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.instructor-dashboard select:focus,
+.instructor-dashboard input:focus {
+  border-color: #0056b3;
+  outline: none;
+}
+
+/* Кнопка */
+.instructor-dashboard button {
+  align-self: flex-start;
+  padding: 12px 24px;
+  background-color: #43a047;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.instructor-dashboard button:hover {
+  background-color: #388e3c;
+  box-shadow: 0 4px 16px #1976d22a;
+  transform: translateY(-2px) scale(1.03);
+}
+
+/* Для выравнивания select и input под лейбл */
+.instructor-dashboard label select,
+.instructor-dashboard label input {
+  display: block;
+  margin-top: 8px;
+}

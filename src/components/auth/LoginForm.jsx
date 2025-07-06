@@ -18,10 +18,32 @@ const LoginForm = ({ onSuccess }) => {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("userEmail", formData.email); // сохраняем email
 
-    onSuccess(accessToken);
-  } catch (err) {
-    setError("Неверные данные или ошибка сервера");
-  }
+    const userRes = await axios.get("http://localhost:8888/api/v1/user/by-email", {
+        params: { email: formData.email },
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+
+      const user = userRes.data;
+      localStorage.setItem("role", user.role);
+
+      if (user.role === "INSTRUCTOR") {
+        const instrRes = await axios.get("http://localhost:8888/api/v1/instructor/by-user-id", {
+          params: { userId: user.id },
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
+        window.location.href = "/instructor/add-slot";
+        return;
+      }
+
+      if (user.role === "ADMIN") {
+        window.location.href = "/admin";
+        return;
+      }
+
+      onSuccess(accessToken);
+    } catch (err) {
+      setError("Неверные данные или ошибка сервера");
+    }
 };
 
 
